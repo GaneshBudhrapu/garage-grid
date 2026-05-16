@@ -10,11 +10,13 @@ interface Customer {
   bikeModel: string;
 }
 
+interface Props {
+  customers: Customer[];
+}
+
 export default function ServiceForm({
   customers,
-}: {
-  customers: Customer[];
-}) {
+}: Props) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -56,11 +58,12 @@ export default function ServiceForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 max-w-xl"
+      className="space-y-4 w-full"
     >
       <select
         name="customerId"
-        className="w-full border rounded-lg p-3"
+        required
+        className="w-full border rounded-lg p-3 bg-white"
       >
         <option value="">
           Select Customer
@@ -71,46 +74,50 @@ export default function ServiceForm({
             key={customer.id}
             value={customer.id}
           >
-            {customer.name} -{" "}
-            {customer.bikeModel}
+            {customer.name} - {customer.bikeModel}
           </option>
         ))}
       </select>
 
       <input
         name="currentKm"
+        type="number"
         placeholder="Current KM"
-        className="w-full border rounded-lg p-3"
-      />
-
-      <textarea
-        name="notes"
-        placeholder="Service Notes"
-        className="w-full border rounded-lg p-3"
-      />
-
-      <input
-        name="labourCharge"
-        placeholder="Labour Charge"
-        className="w-full border rounded-lg p-3"
-      />
-
-      <input
-        name="partsCharge"
-        placeholder="Parts Charge"
-        className="w-full border rounded-lg p-3"
+        required
+        className="w-full border rounded-lg p-3 bg-white"
       />
 
       <input
         name="partsUsed"
         placeholder="Parts Used"
-        className="w-full border rounded-lg p-3"
-        />
-    
+        className="w-full border rounded-lg p-3 bg-white"
+      />
+
+      <textarea
+        name="notes"
+        placeholder="Service Notes"
+        className="w-full border rounded-lg p-3 bg-white"
+      />
+
+      <input
+        name="labourCharge"
+        type="number"
+        placeholder="Labour Charge"
+        required
+        className="w-full border rounded-lg p-3 bg-white"
+      />
+
+      <input
+        name="partsCharge"
+        type="number"
+        placeholder="Parts Charge"
+        required
+        className="w-full border rounded-lg p-3 bg-white"
+      />
 
       <button
         type="submit"
-        className="bg-black text-white px-4 py-3 rounded-lg"
+        className="w-full md:w-auto bg-black text-white px-6 py-3 rounded-lg"
       >
         {loading
           ? "Saving..."

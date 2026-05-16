@@ -4,7 +4,6 @@ interface Service {
   id: string;
   currentKm: number;
   totalAmount: number;
-  nextServiceKm: number;
   nextServiceDate: Date;
 
   customer: {
@@ -13,15 +12,17 @@ interface Service {
   };
 }
 
+interface Props {
+  services: Service[];
+}
+
 export default function ServiceTable({
   services,
-}: {
-  services: Service[];
-}) {
+}: Props) {
   return (
-    <div className="border rounded-xl overflow-hidden">
-      <table className="w-full">
-        <thead className="bg-muted">
+    <div className="overflow-x-auto border rounded-xl bg-white">
+      <table className="w-full min-w-[800px]">
+        <thead className="bg-gray-100">
           <tr>
             <th className="text-left p-4">
               Customer

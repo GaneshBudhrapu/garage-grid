@@ -44,35 +44,39 @@ export default function CustomerForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 max-w-lg"
+      className="space-y-4 w-full"
     >
       <input
         name="name"
         placeholder="Customer Name"
-        className="w-full border rounded-lg p-3"
+        required
+        className="w-full border rounded-lg p-3 bg-white"
       />
 
       <input
         name="phone"
         placeholder="Phone Number"
-        className="w-full border rounded-lg p-3"
+        required
+        className="w-full border rounded-lg p-3 bg-white"
       />
 
       <input
         name="bikeModel"
         placeholder="Bike Model"
-        className="w-full border rounded-lg p-3"
+        required
+        className="w-full border rounded-lg p-3 bg-white"
       />
 
       <input
         name="bikeNumber"
         placeholder="Bike Number"
-        className="w-full border rounded-lg p-3"
+        required
+        className="w-full border rounded-lg p-3 bg-white"
       />
 
       <button
         type="submit"
-        className="bg-black text-white px-4 py-3 rounded-lg"
+        className="w-full md:w-auto bg-black text-white px-6 py-3 rounded-lg"
       >
         {loading ? "Saving..." : "Add Customer"}
       </button>

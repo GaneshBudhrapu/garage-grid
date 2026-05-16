@@ -1,15 +1,17 @@
 import Sidebar from "./sidebar";
 
+interface Props {
+  children: React.ReactNode;
+}
+
 export default function DashboardShell({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Props) {
   return (
-    <div className="flex">
+    <div className="min-h-screen bg-gray-50 md:flex">
       <Sidebar />
 
-      <main className="flex-1 p-6">
+      <main className="flex-1 p-4 md:p-6 overflow-x-auto">
         {children}
       </main>
     </div>
