@@ -11,11 +11,13 @@ interface Customer {
   bikeNumber: string;
 }
 
+interface Props {
+  customers: Customer[];
+}
+
 export default function CustomerTable({
   customers,
-}: {
-  customers: Customer[];
-}) {
+}: Props) {
   const [search, setSearch] = useState("");
 
   const filteredCustomers = customers.filter(
@@ -36,53 +38,35 @@ export default function CustomerTable({
         onChange={setSearch}
       />
 
-      <div className="border rounded-xl overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-muted">
-            <tr>
-              <th className="text-left p-4">
-                Name
-              </th>
-
-              <th className="text-left p-4">
-                Phone
-              </th>
-
-              <th className="text-left p-4">
-                Bike
-              </th>
-
-              <th className="text-left p-4">
-                Number
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filteredCustomers.map((customer) => (
-              <tr
-                key={customer.id}
-                className="border-t"
-              >
-                <td className="p-4">
+      <div className="grid gap-4">
+        {filteredCustomers.map((customer) => (
+          <div
+            key={customer.id}
+            className="bg-white rounded-2xl p-5 border shadow-sm"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h3 className="font-semibold text-lg">
                   {customer.name}
-                </td>
+                </h3>
 
-                <td className="p-4">
+                <p className="text-zinc-500 text-sm mt-1">
                   {customer.phone}
-                </td>
+                </p>
+              </div>
 
-                <td className="p-4">
+              <div className="text-right">
+                <p className="font-medium">
                   {customer.bikeModel}
-                </td>
+                </p>
 
-                <td className="p-4">
+                <p className="text-sm text-zinc-500">
                   {customer.bikeNumber}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
