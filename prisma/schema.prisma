@@ -7,64 +7,50 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Garage {
-  id        String      @id @default(uuid())
-  name      String
-  phone     String
-  address   String?
-  createdAt DateTime    @default(now())
-
-  users     User[]
-  customers Customer[]
-  services  Service[]
-}
-
-model User {
-  id        String   @id @default(uuid())
-  garageId  String
-  name      String
-  email     String   @unique
-  role      String   @default("owner")
-
-  garage    Garage   @relation(fields: [garageId], references: [id])
-
-  createdAt DateTime @default(now())
-}
-
 model Customer {
-  id          String      @id @default(uuid())
+  id          String    @id @default(cuid())
   garageId    String
   name        String
   phone       String
   bikeModel   String
   bikeNumber  String
+  createdAt   DateTime  @default(now())
 
-  garage       Garage      @relation(fields: [garageId], references: [id])
-  services     Service[]
-
-  createdAt   DateTime    @default(now())
+  services    Service[]
 }
 
 model Service {
-  id                 String    @id @default(uuid())
-  garageId           String
-  customerId         String
+  id               String         @id @default(cuid())
+  garageId         String
 
-  currentKm          Int
-  nextServiceKm      Int
-  serviceDate        DateTime
-  nextServiceDate    DateTime
+  customerId       String
+  customer         Customer       @relation(fields: [customerId], references: [id])
 
-  notes              String?
-  partsUsed          String?
+  currentKm        Int
+  nextServiceKm    Int
 
-  labourCharge       Float
-  partsCharge        Float
-  totalAmount        Float
+  serviceDate      DateTime
+  nextServiceDate  DateTime
 
-  garage             Garage    @relation(fields: [garageId], references: [id])
+  labourCharge     Float
+  totalAmount      Float
 
-  customer           Customer  @relation(fields: [customerId], references: [id])
+  notes            String?
 
-  createdAt          DateTime  @default(now())
+  createdAt        DateTime       @default(now())
+
+  serviceItems     ServiceItem[]
+}
+
+model ServiceItem {
+  id          String    @id @default(cuid())
+
+  serviceId   String
+
+  service     Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  name        String
+  price       Float
+
+  createdAt   DateTime  @default(now())
 }

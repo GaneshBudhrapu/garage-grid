@@ -2,42 +2,93 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  const nextServiceDate = new Date();
+    const nextServiceDate =
+      new Date();
 
-  nextServiceDate.setMonth(
-    nextServiceDate.getMonth() + 3
-  );
+    nextServiceDate.setMonth(
+      nextServiceDate.getMonth() +
+        3
+    );
 
-  const service = await prisma.service.create({
-    data: {
-      garageId: "demo-garage",
+    const service =
+      await prisma.service.create({
+        data: {
+          garageId:
+            "demo-garage",
 
-      customerId: body.customerId,
+          customerId:
+            body.customerId,
 
-      currentKm: Number(body.currentKm),
+          currentKm: Number(
+            body.currentKm
+          ),
 
-      nextServiceKm:
-        Number(body.currentKm) + 3000,
+          nextServiceKm:
+            Number(
+              body.currentKm
+            ) + 3000,
 
-      serviceDate: new Date(),
+          serviceDate:
+            new Date(),
 
-      nextServiceDate,
+          nextServiceDate,
 
-      notes: body.notes,
+          labourCharge: Number(
+            body.labourCharge ||
+              0
+          ),
 
-      labourCharge: Number(body.labourCharge),
+          totalAmount: Number(
+            body.totalAmount ||
+              0
+          ),
 
-      partsCharge: Number(body.partsCharge),
+          notes: "",
+        },
+      });
 
-      partsUsed: body.partsUsed,
+    if (
+      body.services &&
+      Array.isArray(
+        body.services
+      )
+    ) {
+      for (const item of body.services) {
+        await prisma.serviceItem.create(
+          {
+            data: {
+              serviceId:
+                service.id,
 
-      totalAmount:
-        Number(body.labourCharge) +
-        Number(body.partsCharge),
-    },
-  });
+              name:
+                item.name,
 
-  return NextResponse.json(service);
+              price: Number(
+                item.price
+              ),
+            },
+          }
+        );
+      }
+    }
+
+    return NextResponse.json(
+      service
+    );
+  } catch (error) {
+    console.log(error);
+
+    return NextResponse.json(
+      {
+        error:
+          "Failed to create service",
+      },
+      {
+        status: 500,
+      }
+    );
+  }
 }
