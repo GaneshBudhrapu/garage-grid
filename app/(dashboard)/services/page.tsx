@@ -1,36 +1,35 @@
+import { prisma } from "@/lib/prisma";
 import ServiceForm from "@/components/services/service-form";
 import ServiceTable from "@/components/services/service-table";
 
-import { prisma } from "@/lib/prisma";
+export const dynamic = "force-dynamic";
 
 export default async function ServicesPage() {
-  const customers =
-    await prisma.customer.findMany({
-      orderBy: {
-        name: "asc",
-      },
-    });
+  const customers = await prisma.customer.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
-  const services =
-    await prisma.service.findMany({
-      include: {
-        customer: true,
-      },
+  const services = await prisma.service.findMany({
+    include: {
+      customer: true,
+    },
 
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">
           Services
         </h1>
 
-        <p className="text-muted-foreground">
-          Create and manage bike services
+        <p className="text-gray-500 mt-1">
+          Track all bike services
         </p>
       </div>
 

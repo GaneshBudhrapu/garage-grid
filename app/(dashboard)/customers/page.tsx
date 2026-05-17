@@ -1,6 +1,8 @@
+import { prisma } from "@/lib/prisma";
 import CustomerForm from "@/components/customers/customer-form";
 import CustomerTable from "@/components/customers/customer-table";
-import { prisma } from "@/lib/prisma";
+
+export const dynamic = "force-dynamic";
 
 export default async function CustomersPage() {
   const customers = await prisma.customer.findMany({
@@ -10,13 +12,13 @@ export default async function CustomersPage() {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">
           Customers
         </h1>
 
-        <p className="text-muted-foreground">
+        <p className="text-gray-500 mt-1">
           Manage your garage customers
         </p>
       </div>
